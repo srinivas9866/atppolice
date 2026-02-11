@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Women Safety Survey Form</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #0f172a;
+      --muted: #5b667a;
+      --brand: #1d4ed8;
+      --accent: #f59e0b;
+      --card: #ffffff;
+      --line: #e2e8f0;
+      --bg: #f8fafc;
+      --shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Space Grotesk", system-ui, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(1200px 500px at 10% -10%, rgba(29, 78, 216, 0.12), transparent 60%),
+        radial-gradient(900px 400px at 90% 0%, rgba(245, 158, 11, 0.14), transparent 60%),
+        var(--bg);
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 48px 20px 72px;
+    }
+
+    .header {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    .dept-title h2 {
+      margin: 0;
+      font-size: clamp(18px, 3vw, 26px);
+      font-weight: 700;
+      color: var(--brand);
+    }
+    .brand-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 0 4px;
+    }
+
+    .logo-pair {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 70px;
+      height: 70px;
+      object-fit: contain;
+    }
+
+    .dept-title {
+      text-align: center;
+    }
+
+    .dept-title h2 {
+      margin: 0;
+      font-size: clamp(18px, 3vw, 26px);
+      font-weight: 700;
+      color: var(--brand);
+    }
+
+    .dept-title h3 {
+      margin: 4px 0 0;
+      font-size: clamp(14px, 2.5vw, 18px);
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .dept-title h4 {
+      margin: 4px 0 0;
+      font-size: clamp(10px, 2.5vw, 12px);
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    h1 {
+      font-family: "Fraunces", serif;
+      font-size: clamp(28px, 4vw, 44px);
+      margin: 0;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 620px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+    }
+
+    .req-note {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 22px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .field {
+      display: grid;
+      gap: 10px;
+    }
+
+    label {
+      font-weight: 600;
+    }
+
+    .required::after {
+      content: " *";
+      color: #dc2626;
+      font-weight: 700;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    select,
+    textarea {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 15px;
+      font-family: inherit;
+      background: #fdfdfd;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    select:disabled {
+      background: #eef2f7;
+      color: #6b7280;
+    }
+
+    .options {
+      display: grid;
+      gap: 10px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #f8fafc;
+    }
+
+    .followup {
+      margin-top: 10px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+    }
+
+    .option input {
+      accent-color: var(--brand);
+      width: 18px;
+      height: 18px;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .submit {
+      border: none;
+      border-radius: 999px;
+      padding: 12px 26px;
+      font-size: 15px;
+      font-weight: 600;
+      background: linear-gradient(120deg, var(--brand), #0ea5e9);
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(14, 165, 233, 0.25);
+    }
+
+    .submit:hover {
+      filter: brightness(1.03);
+    }
+
+    .reset {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 12px 22px;
+      background: transparent;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .dialog-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      padding: 20px;
+      z-index: 10;
+    }
+
+    .dialog-backdrop.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .dialog {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 26px 26px 22px;
+      text-align: center;
+      max-width: 360px;
+      width: 100%;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+    }
+
+    .dialog-icon {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 12px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(34, 197, 94, 0.15);
+      color: #16a34a;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .dialog h5 {
+      margin: 0 0 6px;
+      font-size: 18px;
+    }
+
+    .dialog p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .dialog button {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 22px;
+      font-size: 14px;
+      font-weight: 600;
+      background: linear-gradient(120deg, var(--brand), #0ea5e9);
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 10px 22px rgba(14, 165, 233, 0.2);
+    }
+
+    @media (max-width: 640px) {
+      .brand-row {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .logo-pair {
+        justify-content: center;
+      }
+
+      .brand-logo {
+        margin: 0 auto;
+      }
+
+      .card {
+        padding: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="header">
+      <div class="brand-row">
+        <div class="logo-pair">
+          <img class="brand-logo" src="/static/ap_police.png" alt="AP Police Logo" />
+          <img class="brand-logo" src="/static/enhanced.jpg" alt="Anantapur Logo" />
+            <img class="brand-logo" src="/static/saas_logo.png" alt="SAAS Logo" />
+        </div>
+        <div class="dept-title">
+          <h2>Andhra Pradesh Police Department</h2>
+          <h3>Anantapur Police - Women Safety Survey</h3>
+          <h4>(Developed by - SAAS ELECTRICS LLP)</h4>
+        </div>
+        <div class="logo-pair">
+            <img class="brand-logo" src="/static/sp.png" alt="SP Logo" />
+        </div>
+      </div>
+      
+      <h1>Women Safety Response Form</h1>
+      <p class="subtitle">Please provide the details below. Fields marked with an asterisk are required.</p>
+    </header>
+
+    <form class="card" id="safety-form">
+      <div class="req-note">* Required</div>
+
+      <div class="grid">
+        <div class="field">
+          <label class="required" for="subdivision">Subdivision</label>
+          <select id="subdivision" name="subdivision" required autofocus>
+            <option value="">Select Subdivision</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="required" for="ps">Police Station</label>
+          <select id="ps" name="policeStation" disabled required>
+            <option value="">Select Police Station</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="required" for="area">Area / Village</label>
+          <select id="area" name="area" disabled required>
+            <option value="">Select Area</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="required" for="respondent-name">Respondent Name</label>
+          <input type="text" id="respondent-name" name="respondentName" required />
+        </div>
+
+        <div class="field">
+          <label class="required">Age Group</label>
+          <div class="options">
+            <label class="option"><input type="radio" name="ageGroup" value="below-25" required />Below 25</label>
+            <label class="option"><input type="radio" name="ageGroup" value="25-45" />25-45</label>
+            <label class="option"><input type="radio" name="ageGroup" value="above-45" />Above 45</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="required" for="address">Address / Locality</label>
+          <textarea id="address" name="address" required></textarea>
+        </div>
+
+        <div class="field">
+          <label class="required" for="mobile">Mobile Number</label>
+          <input type="tel" id="mobile" name="mobile" required />
+        </div>
+
+        <div class="field">
+          <label class="required">Occupation</label>
+          <div class="options">
+            <label class="option"><input type="radio" name="occupation" value="student" required />Student</label>
+            <label class="option"><input type="radio" name="occupation" value="homemaker" />Homemaker</label>
+            <label class="option"><input type="radio" name="occupation" value="employed" />Employed (Govt / Private / Self)</label>
+            <label class="option"><input type="radio" name="occupation" value="unemployed" />Unemployed</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="required">Family behavior towards you/your children</label>
+          <div class="options">
+            <label class="option"><input type="radio" name="familyBehavior" value="good" required />Good</label>
+            <label class="option"><input type="radio" name="familyBehavior" value="average" />Average</label>
+            <label class="option"><input type="radio" name="familyBehavior" value="poor" />Poor</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Any addiction in family members?</label>
+          <div class="options">
+            <label class="option"><input type="checkbox" name="addiction" value="alcohol" />Alcohol</label>
+            <label class="option"><input type="checkbox" name="addiction" value="drugs" />Drugs</label>
+            <label class="option"><input type="checkbox" name="addiction" value="tobacco" />Tobacco</label>
+            <label class="option"><input type="checkbox" name="addiction" value="none" />NO</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="required">Neighbourhood behaviour towards you</label>
+          <div class="options">
+            <label class="option"><input type="radio" name="neighbourhoodBehavior" value="good" required />Good</label>
+            <label class="option"><input type="radio" name="neighbourhoodBehavior" value="average" />Average</label>
+            <label class="option"><input type="radio" name="neighbourhoodBehavior" value="poor" />Poor</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="required">Safety of your street / locality</label>
+          <div class="options">
+            <label class="option"><input type="radio" name="streetSafety" value="safe" required />Safe</label>
+            <label class="option"><input type="radio" name="streetSafety" value="neutral" />Neutral</label>
+            <label class="option"><input type="radio" name="streetSafety" value="unsafe" />Unsafe</label>
+          </div>
+          <div class="options followup hidden" id="street-unsafe-followup">
+            <label class="option"><input type="checkbox" name="streetUnsafeReasons" value="eve-teasing" />Eve teasing</label>
+            <label class="option"><input type="checkbox" name="streetUnsafeReasons" value="drinking" />Drinking at nearby premises</label>
+            <label class="option"><input type="checkbox" name="streetUnsafeReasons" value="anti-social" />Illegal/anti social activities</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="required">Problems faced during public transportation</label>
+          <div class="options">
+            <label class="option"><input type="radio" name="publicTransportIssues" value="yes" required />Yes</label>
+            <label class="option"><input type="radio" name="publicTransportIssues" value="sometimes" />Sometimes</label>
+            <label class="option"><input type="radio" name="publicTransportIssues" value="no" />No</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>If student: Safety at school/college surroundings</label>
+          <div class="options">
+            <label class="option"><input type="radio" name="schoolSafety" value="safe" />Safe</label>
+            <label class="option"><input type="radio" name="schoolSafety" value="neutral" />Neutral</label>
+            <label class="option"><input type="radio" name="schoolSafety" value="unsafe" />Unsafe</label>
+          </div>
+          <div class="options followup hidden" id="school-unsafe-followup">
+            <label class="option"><input type="checkbox" name="schoolUnsafeReasons" value="eve-teasing" />Eve teasing / stalking (love)</label>
+            <label class="option"><input type="checkbox" name="schoolUnsafeReasons" value="enroute-stalking" />Enroute stalking</label>
+            <label class="option"><input type="checkbox" name="schoolUnsafeReasons" value="transport-unsafe" />Transport unsafe</label>
+            <label class="option"><input type="checkbox" name="schoolUnsafeReasons" value="ragging-drugs" />Ragging / drugs / illegal activities</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="required">Faced cyber harassment / blackmail</label>
+          <div class="options">
+            <label class="option"><input type="radio" name="cyberHarassment" value="yes" required />Yes</label>
+            <label class="option"><input type="radio" name="cyberHarassment" value="no" />No</label>
+            <label class="option"><input type="radio" name="cyberHarassment" value="not-sure" />Not Sure</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="required">Faced forced love proposals / stalking</label>
+          <div class="options">
+            <label class="option"><input type="radio" name="stalking" value="yes" required />Yes</label>
+            <label class="option"><input type="radio" name="stalking" value="no" />No</label>
+            <label class="option"><input type="radio" name="stalking" value="not-sure" />Not Sure</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="required">Emergency police numbers visible in public places</label>
+          <div class="options">
+            <label class="option"><input type="radio" name="emergencyNumbersVisible" value="yes" required />Yes</label>
+            <label class="option"><input type="radio" name="emergencyNumbersVisible" value="no" />No</label>
+            <label class="option"><input type="radio" name="emergencyNumbersVisible" value="not-sure" />Not Sure</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="required">Safety feeling during night time</label>
+          <div class="options">
+            <label class="option"><input type="radio" name="nightSafety" value="safe" required />Safe</label>
+            <label class="option"><input type="radio" name="nightSafety" value="neutral" />Neutral</label>
+            <label class="option"><input type="radio" name="nightSafety" value="unsafe" />Unsafe</label>
+          </div>
+          <div class="options followup hidden" id="night-unsafe-followup">
+            <label class="option"><input type="checkbox" name="nightUnsafeReasons" value="eve-teasing" />Eve teasing / stalking (love)</label>
+            <label class="option"><input type="checkbox" name="nightUnsafeReasons" value="enroute-stalking" />Enroute stalking</label>
+            <label class="option"><input type="checkbox" name="nightUnsafeReasons" value="transport-unsafe" />Transport unsafe</label>
+            <label class="option"><input type="checkbox" name="nightUnsafeReasons" value="ragging-drugs" />Ragging / drugs / illegal activities</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="required">Police responsiveness in your area</label>
+          <div class="options">
+            <label class="option"><input type="radio" name="policeResponsiveness" value="immediate" required />Immediate</label>
+            <label class="option"><input type="radio" name="policeResponsiveness" value="average" />Average</label>
+            <label class="option"><input type="radio" name="policeResponsiveness" value="no-response" />No Response</label>
+          </div>
+            <div class="options followup hidden" id="police-no-response-followup">
+            <label class="option"><input type="checkbox" name="policeNoResponseReasons" value="timely-response" />No Timely response</label>
+            <label class="option"><input type="checkbox" name="policeNoResponseReasons" value="no-visit" />No visit</label>
+            <label class="option"><input type="checkbox" name="policeNoResponseReasons" value="discrimination" />Discrimination (One sided)</label>
+          </div>
+        </div>
+        </div>
+
+        <div class="field">
+          <label class="required">Comfort in approaching women police officers</label>
+          <div class="options">
+            <label class="option"><input type="radio" name="womenPoliceComfort" value="yes" required />Yes</label>
+            <label class="option"><input type="radio" name="womenPoliceComfort" value="no" />No</label>
+            <label class="option"><input type="radio" name="womenPoliceComfort" value="not-sure" />Not Sure</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="required">Did you registered in Shakti App</label>
+          <div class="options">
+            <label class="option"><input type="radio" name="shaktiApp" value="yes" required />Yes</label>
+            <label class="option"><input type="radio" name="shaktiApp" value="no" />No</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="submit" type="submit">Submit response</button>
+      </div>
+    </form>
+  </main>
+
+  <div class="dialog-backdrop" id="success-dialog" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="dialog" role="document">
+      <div class="dialog-icon">✓</div>
+      <h5>Response Submitted</h5>
+      <p>Thank you. Your response has been recorded successfully.</p>
+      <button type="button" id="dialog-close">Done</button>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("safety-form");
+    const successDialog = document.getElementById("success-dialog");
+    const dialogClose = document.getElementById("dialog-close");
+    const followupUpdaters = [];
+
+    const showSuccessDialog = () => {
+      successDialog.classList.add("show");
+      successDialog.setAttribute("aria-hidden", "false");
+      dialogClose.focus();
+    };
+
+    const hideSuccessDialog = () => {
+      successDialog.classList.remove("show");
+      successDialog.setAttribute("aria-hidden", "true");
+    };
+
+    const toggleUnsafeFollowup = (radioName, unsafeValue, followupId) => {
+      const radios = document.querySelectorAll(`input[name="${radioName}"]`);
+      const followup = document.getElementById(followupId);
+
+      const update = () => {
+        const selected = document.querySelector(`input[name="${radioName}"]:checked`);
+        const isUnsafe = selected && selected.value === unsafeValue;
+        followup.classList.toggle("hidden", !isUnsafe);
+
+        if (!isUnsafe) {
+          followup.querySelectorAll("input[type=checkbox]").forEach((box) => {
+            box.checked = false;
+          });
+        }
+      };
+
+      radios.forEach((radio) => radio.addEventListener("change", update));
+      update();
+      return update;
+    };
+
+    followupUpdaters.push(toggleUnsafeFollowup("streetSafety", "unsafe", "street-unsafe-followup"));
+    followupUpdaters.push(toggleUnsafeFollowup("schoolSafety", "unsafe", "school-unsafe-followup"));
+    followupUpdaters.push(toggleUnsafeFollowup("nightSafety", "unsafe", "night-unsafe-followup"));
+    followupUpdaters.push(toggleUnsafeFollowup("policeResponsiveness", "no-response", "police-no-response-followup"));
+
+    let rawData = [];
+
+    fetch("/static/data.json")
+      .then((response) => response.json())
+      .then((data) => {
+        rawData = data;
+
+        const subdivisionSelect = document.getElementById("subdivision");
+        const subdivisions = [...new Set(rawData.map((item) => item.subdivision))];
+
+        subdivisions.forEach((subdivision) => {
+          subdivisionSelect.innerHTML += `<option value="${subdivision}">${subdivision}</option>`;
+        });
+      });
+
+    document.getElementById("subdivision").addEventListener("change", function () {
+      const psSelect = document.getElementById("ps");
+      const areaSelect = document.getElementById("area");
+
+      psSelect.innerHTML = "<option value=''>Select Police Station</option>";
+      areaSelect.innerHTML = "<option value=''>Select Area</option>";
+
+      psSelect.disabled = false;
+      areaSelect.disabled = true;
+
+      if (!this.value) return;
+
+      const psSet = new Set(
+        rawData
+          .filter((item) => item.subdivision === this.value)
+          .map((item) => item.psname)
+      );
+
+      psSet.forEach((ps) => {
+        psSelect.innerHTML += `<option value="${ps}">${ps}</option>`;
+      });
+    });
+
+    document.getElementById("ps").addEventListener("change", function () {
+      const areaSelect = document.getElementById("area");
+      areaSelect.innerHTML = "<option value=''>Select Area</option>";
+      areaSelect.disabled = false;
+
+      if (!this.value) return;
+
+      const areas = rawData
+        .filter(
+          (item) =>
+            item.subdivision === document.getElementById("subdivision").value &&
+            item.psname === this.value
+        )
+        .map((item) => item.area);
+
+      areas.forEach((area) => {
+        areaSelect.innerHTML += `<option value="${area}">${area}</option>`;
+      });
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const formData = new FormData(form);
+      const payload = {};
+
+      for (const [key, value] of formData.entries()) {
+        if (payload[key]) {
+          if (!Array.isArray(payload[key])) {
+            payload[key] = [payload[key]];
+          }
+          payload[key].push(value);
+        } else {
+          payload[key] = value;
+        }
+      }
+
+      [
+        "addiction",
+        "streetUnsafeReasons",
+        "schoolUnsafeReasons",
+        "nightUnsafeReasons",
+        "policeNoResponseReasons"
+      ].forEach((key) => {
+        if (!payload[key]) payload[key] = [];
+      });
+
+      try {
+        const response = await fetch("/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) throw new Error("Submission failed");
+        showSuccessDialog();
+        form.reset();
+
+        document.getElementById("ps").disabled = true;
+        document.getElementById("area").disabled = true;
+        document.getElementById("ps").innerHTML = "<option value=''>Select Police Station</option>";
+        document.getElementById("area").innerHTML = "<option value=''>Select Area</option>";
+        document.getElementById("subdivision").value = "";
+        followupUpdaters.forEach((update) => update());
+      } catch (error) {
+        alert("Unable to submit response. Please try again.");
+      }
+    });
+
+    dialogClose.addEventListener("click", hideSuccessDialog);
+    successDialog.addEventListener("click", (event) => {
+      if (event.target === successDialog) {
+        hideSuccessDialog();
+      }
+    });
+
+    // Date and Time Script
+    function updateTime() {
+        const now = new Date();
+
+        // Time
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const seconds = now.getSeconds().toString().padStart(2, '0');
+
+        // Date
+        const day = now.getDate().toString().padStart(2, '0');
+        const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed
+        const year = now.getFullYear();
+
+        // Combine date and time
+        const timeEl = document.getElementById('current-time');
+        if (timeEl) {
+          timeEl.textContent = `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+        }
+        }
+
+        // Update every second
+        setInterval(updateTime, 1000);
+        updateTime(); // initial call
+  </script>
+</body>
+</html>

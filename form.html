@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<style>
+.header {
+  width: 100%;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 16px 20px;
+
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+
+  overflow: hidden;
+}
+
+/* CENTER CONTENT */
+.header-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  white-space: nowrap;
+}
+
+.header-center img {
+  height: 70px;
+}
+
+.header-text {
+  text-align: center;
+}
+
+.header-text h1 {
+  font-size: clamp(14px, 2.4vw, 24px);
+  color: #1d4ed8;
+  font-weight: 700;
+}
+
+.header-text h2 {
+  font-size: clamp(12px, 2vw, 16px);
+  font-weight: 700;
+}
+
+.header-text h3 {
+  font-size: clamp(10px, 1.6vw, 13px);
+  color: #6b7280;
+}
+
+
+/* MOBILE SHRINK */
+@media (max-width: 768px) {
+  .header-center {
+    transform: scale(0.8);
+  }
+
+}
+
+@media (max-width: 480px) {
+  .header-center {
+    transform: scale(0.65);
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <div>
+        <img src="saas_logo.png" 
+       alt="Saas_Logo" class="h-10 w-auto" style="height: 20px;">
+    </div>
+  <!-- LEFT / CENTER GROUP -->
+  <div class="header-center">
+    <img src="ap_police.png" alt="AP Police Logo">
+
+    <div class="header-text">
+      <h1>Andhra Pradesh State Police Department</h1>
+      <h2>Anantapur District Police - Women Safety Analytics</h2>
+      <h3>(Powered by SAAS ELECTRICS LLP, Vijayawada)</h3>
+    </div>
+
+    <img src="enhanced.jpg" alt="AP Logo">
+  </div>
+</header>
+
+
+<script>
+  function updateTime() {
+    document.getElementById("current-time").innerText =
+      new Date().toLocaleString();
+  }
+  updateTime();
+  setInterval(updateTime, 1000);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Analytics</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      padding: 40px;
+    }
+
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: #ffffff;
+      padding: 12px 18px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      margin: 0 auto 24px;
+      max-width: 700px;
+    }
+
+    .page-header img {
+      width: 70px;
+      height: 70px;
+      object-fit: contain;
+    }
+
+    .page-header h1 {
+      flex: 1;
+      text-align: center;
+      font-size: 1.6rem;
+      margin: 0;
+      letter-spacing: 0.5px;
+      color: #1b2a4a;
+      text-transform: uppercase;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+    }
+
+    select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    select:disabled {
+      background: #eee;
+    }
+  </style>
+  <link rel="stylesheet" href="style.css">
+</head>
+  <header class="w-full bg-white shadow-md px-8 py-6 relative flex items-center justify-center">
+  <!-- Center Title -->
+    <div class="flex items-center justify-center gap-6">
+    <!-- Left Image -->
+    <img src="ap_police.png"
+        alt="AP_POLICE_Logo" class="h-20 w-auto">
+
+    <!-- Text in the middle -->
+    <div class="text-center">
+        <h1 class="text-2xl font-bold text-blue-700">Andhra Pradesh State Police Department</h1>
+        <h2 class="text-gray-700 font-bold">Anantapur District Police - Women Safety Analytics</h2>
+        <h3 class="text-gray-500 text-sm">(Powered by SAAS ELECTRICS LLP, Vijayawada)</h3>
+    </div>
+
+    <!-- Right Image -->
+    <img src="enhanced.jpg" 
+        alt="AP_Logo" class="h-20 w-auto">
+    </div>
+  <!-- Right Logo + Logout + Date & Time -->
+ <div class="absolute right-20 p-6 flex flex-col items-center space-y-2">
+  <img src="saas_logo.png" 
+       alt="Saas_Logo" class="h-10 w-10" style="height: 40px;">
+  <div class="text-center">
+    <h5 class="text-gray-800 font-bold">Date & Time:</h5>
+    <span id="current-time" class="text-gray-600 font-medium"></span>
+  </div>
+</div>
+</header>
+<br>
+<body>
+<div class="container">
+  <h2 style="font-weight: bold;">Area wise analytics</h2>
+
+  <label>Subdivision</label>
+  <select id="subdivision">
+    <option value="">Select Subdivision</option>
+  </select>
+
+  <label>Police Station</label>
+  <select id="ps" disabled>
+    <option value="">Select Police Station</option>
+  </select>
+
+  <label>Area / Village</label>
+  <select id="area" disabled>
+    <option value="">Select Area</option>
+  </select>
+</div>
+
+<script>
+  let rawData = [];
+
+  fetch("data.json")
+    .then(response => response.json())
+    .then(data => {
+      rawData = data;
+
+      const subdivisionSelect = document.getElementById("subdivision");
+      const subdivisions = [...new Set(rawData.map(d => d.subdivision))];
+
+      subdivisions.forEach(sub => {
+        subdivisionSelect.innerHTML += `<option value="${sub}">${sub}</option>`;
+      });
+    });
+
+  document.getElementById("subdivision").addEventListener("change", function () {
+    const psSelect = document.getElementById("ps");
+    const areaSelect = document.getElementById("area");
+
+    psSelect.innerHTML = "<option value=''>Select Police Station</option>";
+    areaSelect.innerHTML = "<option value=''>Select Area</option>";
+
+    psSelect.disabled = false;
+    areaSelect.disabled = true;
+
+    if (!this.value) return;
+
+    const psSet = new Set(
+      rawData
+        .filter(d => d.subdivision === this.value)
+        .map(d => d.psname)
+    );
+
+    psSet.forEach(ps => {
+      psSelect.innerHTML += `<option value="${ps}">${ps}</option>`;
+    });
+  });
+
+  document.getElementById("ps").addEventListener("change", function () {
+    const areaSelect = document.getElementById("area");
+    areaSelect.innerHTML = "<option value=''>Select Area</option>";
+    areaSelect.disabled = false;
+
+    if (!this.value) return;
+
+    const areas = rawData
+      .filter(d =>
+        d.subdivision === document.getElementById("subdivision").value &&
+        d.psname === this.value
+      )
+      .map(d => d.area);
+
+    areas.forEach(area => {
+      areaSelect.innerHTML += `<option value="${area}">${area}</option>`;
+    });
+  });
+  function updateTime() {
+  const now = new Date();
+
+  // Time
+  const hours = now.getHours().toString().padStart(2, '0');
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  const seconds = now.getSeconds().toString().padStart(2, '0');
+
+  // Date
+  const day = now.getDate().toString().padStart(2, '0');
+  const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed
+  const year = now.getFullYear();
+
+  // Combine date and time
+  document.getElementById('current-time').textContent = `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+}
+
+// Update every second
+setInterval(updateTime, 1000);
+updateTime(); // initial call
+</script>
+
+</body>
+</html>

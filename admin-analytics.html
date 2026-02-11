@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Women Safety - Admin Analytics</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root {
+      --ink: #0b1220;
+      --muted: #556173;
+      --brand: #155e75;
+      --accent: #f59e0b;
+      --mint: #22c55e;
+      --danger: #ef4444;
+      --panel: #ffffff;
+      --bg: #f4f7fb;
+      --line: #e2e8f0;
+      --shadow: 0 20px 60px rgba(10, 20, 40, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Space Grotesk", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(900px 420px at 10% -10%, rgba(21, 94, 117, 0.18), transparent 60%),
+        radial-gradient(800px 380px at 90% 0%, rgba(245, 158, 11, 0.18), transparent 60%),
+        var(--bg);
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 28px 20px 64px;
+    }
+
+    .brand-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 26px;
+    }
+
+    .logo-pair {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .brand-logo {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+    }
+
+    .dept-title {
+      text-align: center;
+    }
+
+    .dept-title h2 {
+      margin: 0;
+      font-size: 22px;
+      color: var(--brand);
+      font-weight: 700;
+    }
+
+    .dept-title h3 {
+      margin: 4px 0 0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .dept-title h4 {
+      margin: 4px 0 0;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .filters label {
+      display: grid;
+      gap: 8px;
+      font-weight: 600;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    select {
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #fff;
+      font-size: 15px;
+    }
+
+    .scope {
+      margin: 8px 0 20px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--panel);
+      border-radius: 20px;
+      padding: 20px;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      box-shadow: var(--shadow);
+    }
+
+    .card h3 {
+      margin: 0 0 12px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .kpi {
+      font-family: "Fraunces", serif;
+      font-size: 36px;
+      color: var(--brand);
+    }
+
+    .kpi-sub {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    .charts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .chart-card {
+      background: var(--panel);
+      border-radius: 20px;
+      padding: 18px 18px 24px;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      box-shadow: var(--shadow);
+    }
+
+    .chart-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .pill {
+      background: rgba(21, 94, 117, 0.1);
+      color: var(--brand);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .empty {
+      color: var(--muted);
+      font-size: 14px;
+      margin: 0;
+    }
+
+    @media (max-width: 720px) {
+      .brand-row {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .logo-pair {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+<main class="page">
+  <div class="brand-row">
+    <div class="logo-pair">
+      <img src="/static/ap_police.png" class="brand-logo" alt="AP Police Logo">
+      <img src="/static/enhanced.jpg" class="brand-logo" alt="Anantapur Logo">
+      <img src="/static/saas_logo.png" class="brand-logo" alt="SAAS Logo">
+    </div>
+    <div class="dept-title">
+      <h2>Andhra Pradesh Police Department</h2>
+      <h3>Anantapur Police - Women Safety Analytics</h3>
+      <h4>(Developed by SAAS ELECTRICS LLP)</h4>
+    </div>
+    <div class="logo-pair">
+      <img src="/static/sp.png" class="brand-logo" alt="SP Logo">
+    </div>
+  </div>
+
+  <section class="filters">
+    <label>
+      Subdivision
+      <select id="subdivision">
+        <option value="">Select Subdivision</option>
+      </select>
+    </label>
+
+    <label>
+      Police Station
+      <select id="ps" disabled>
+        <option value="">Select Police Station</option>
+      </select>
+    </label>
+
+    <label>
+      Area / Village
+      <select id="area" disabled>
+        <option value="">Select Area</option>
+      </select>
+    </label>
+  </section>
+
+  <div class="scope" id="scopeText">Showing: All Subdivisions</div>
+
+  <section class="grid">
+    <div class="card">
+      <h3>Responses Captured</h3>
+      <div class="kpi" id="kpiResponses">0</div>
+      <div class="kpi-sub" id="kpiUpdated">Last updated: --</div>
+    </div>
+
+    <div class="card">
+      <h3>Safety Index</h3>
+      <div class="kpi" id="kpiSafety">0%</div>
+      <div class="kpi-sub">Average of key safety questions</div>
+    </div>
+
+    <div class="card">
+      <h3>Risk Index</h3>
+      <div class="kpi" id="kpiRisk">0%</div>
+      <div class="kpi-sub">Higher means more attention needed</div>
+    </div>
+
+    <div class="card">
+      <h3>Top Concern</h3>
+      <div class="kpi" id="kpiConcern">--</div>
+      <div class="kpi-sub">Most frequent unsafe reason</div>
+    </div>
+  </section>
+
+  <section class="charts">
+    <div class="chart-card">
+      <div class="chart-title">Street Safety Perception <span class="pill">Pie</span></div>
+      <canvas id="streetPie"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">Question Scorecard <span class="pill">Bars</span></div>
+      <canvas id="questionBars"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">Unsafe Reasons <span class="pill">Hotspots</span></div>
+      <canvas id="reasonBars"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">Response Trend <span class="pill">Timeline</span></div>
+      <canvas id="responseLine"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">Age Group Split <span class="pill">Doughnut</span></div>
+      <canvas id="ageDoughnut"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">Police Responsiveness <span class="pill">Stack</span></div>
+      <canvas id="policeStack"></canvas>
+    </div>
+  </section>
+</main>
+
+<script>
+  let masterData = [];
+  let responses = [];
+  let charts = [];
+
+  const SCORE_MAP = {
+    streetSafety: { safe: 2, neutral: 1, unsafe: 0 },
+    nightSafety: { safe: 2, neutral: 1, unsafe: 0 },
+    policeResponsiveness: { immediate: 2, average: 1, "no-response": 0 },
+    cyberHarassment: { yes: 0, "not-sure": 1, no: 2 },
+    stalking: { yes: 0, "not-sure": 1, no: 2 },
+    emergencyNumbersVisible: { yes: 2, "not-sure": 1, no: 0 },
+    publicTransportIssues: { yes: 0, sometimes: 1, no: 2 },
+    womenPoliceComfort: { yes: 2, "not-sure": 1, no: 0 }
+  };
+
+  const QUESTION_LABELS = {
+    streetSafety: "Street Safety",
+    nightSafety: "Night Safety",
+    policeResponsiveness: "Police Response",
+    cyberHarassment: "Cyber Safety",
+    stalking: "Stalking",
+    emergencyNumbersVisible: "Emergency Numbers",
+    publicTransportIssues: "Public Transport",
+    womenPoliceComfort: "Women Police Comfort"
+  };
+
+  Promise.all([
+    fetch("/static/data.json").then((r) => r.json()),
+    fetch("/static/responses.json").then((r) => r.json())
+  ]).then(([data, resp]) => {
+    masterData = data;
+    responses = resp;
+    initSubdivision();
+    updateDashboard();
+  }).catch(() => {
+    document.getElementById("scopeText").textContent = "Unable to load data";
+  });
+
+  function initSubdivision() {
+    const subs = [...new Set(masterData.map((i) => i.subdivision))];
+    const subdivision = document.getElementById("subdivision");
+    subs.forEach((s) => subdivision.innerHTML += `<option value="${s}">${s}</option>`);
+  }
+
+  document.getElementById("subdivision").addEventListener("change", () => {
+    const subdivision = document.getElementById("subdivision");
+    const ps = document.getElementById("ps");
+    const area = document.getElementById("area");
+    ps.innerHTML = "<option value=\"\">Select Police Station</option>";
+    area.innerHTML = "<option value=\"\">Select Area</option>";
+    ps.disabled = false;
+    area.disabled = true;
+
+    const stations = [...new Set(masterData
+      .filter((i) => i.subdivision === subdivision.value)
+      .map((i) => i.psname))];
+
+    stations.forEach((p) => ps.innerHTML += `<option value="${p}">${p}</option>`);
+    updateDashboard();
+  });
+
+  document.getElementById("ps").addEventListener("change", () => {
+    const subdivision = document.getElementById("subdivision");
+    const ps = document.getElementById("ps");
+    const area = document.getElementById("area");
+    area.innerHTML = "<option value=\"\">Select Area</option>";
+    area.disabled = false;
+
+    const areas = masterData
+      .filter((i) => i.subdivision === subdivision.value && i.psname === ps.value)
+      .map((i) => i.area);
+
+    areas.forEach((a) => area.innerHTML += `<option value="${a}">${a}</option>`);
+    updateDashboard();
+  });
+
+  document.getElementById("area").addEventListener("change", updateDashboard);
+
+  function updateDashboard() {
+    const subdivision = document.getElementById("subdivision").value;
+    const ps = document.getElementById("ps").value;
+    const area = document.getElementById("area").value;
+
+    const filtered = responses.filter((r) =>
+      (!subdivision || r.subdivision === subdivision) &&
+      (!ps || r.policeStation === ps) &&
+      (!area || r.area === area)
+    );
+
+    updateScopeText(subdivision, ps, area, filtered.length);
+    renderKPIs(filtered);
+    renderCharts(filtered);
+  }
+
+  function updateScopeText(subdivision, ps, area, count) {
+    const scope = [subdivision || "All Subdivisions", ps || "All Police Stations", area || "All Areas"].join(" / ");
+    document.getElementById("scopeText").textContent = `Showing: ${scope} | ${count} response(s)`;
+  }
+
+  function renderKPIs(data) {
+    const kpiResponses = document.getElementById("kpiResponses");
+    const kpiUpdated = document.getElementById("kpiUpdated");
+    const kpiSafety = document.getElementById("kpiSafety");
+    const kpiRisk = document.getElementById("kpiRisk");
+    const kpiConcern = document.getElementById("kpiConcern");
+
+    kpiResponses.textContent = data.length;
+    const last = data[data.length - 1]?.submittedAt || "--";
+    kpiUpdated.textContent = `Last updated: ${last === "--" ? "--" : new Date(last).toLocaleString()}`;
+
+    const score = computeSafetyScore(data);
+    kpiSafety.textContent = `${score}%`;
+    kpiRisk.textContent = `${Math.max(0, 100 - score)}%`;
+
+    const topConcern = getTopConcern(data);
+    kpiConcern.textContent = topConcern || "--";
+  }
+
+  function computeSafetyScore(data) {
+    if (!data.length) return 0;
+    let total = 0;
+    let count = 0;
+
+    data.forEach((row) => {
+      Object.keys(SCORE_MAP).forEach((key) => {
+        const map = SCORE_MAP[key];
+        if (row[key] && map[row[key]] !== undefined) {
+          total += map[row[key]];
+          count += 2;
+        }
+      });
+    });
+
+    if (!count) return 0;
+    return Math.round((total / count) * 100);
+  }
+
+  function getTopConcern(data) {
+    const buckets = {};
+    data.forEach((row) => {
+      ["streetUnsafeReasons", "nightUnsafeReasons", "policeNoResponseReasons"].forEach((key) => {
+        const items = Array.isArray(row[key]) ? row[key] : row[key] ? [row[key]] : [];
+        items.forEach((item) => {
+          buckets[item] = (buckets[item] || 0) + 1;
+        });
+      });
+    });
+
+    const sorted = Object.entries(buckets).sort((a, b) => b[1] - a[1]);
+    if (!sorted.length) return "--";
+    return `${formatLabel(sorted[0][0])} (${sorted[0][1]})`;
+  }
+
+  function renderCharts(data) {
+    charts.forEach((chart) => chart.destroy());
+    charts = [];
+
+    charts.push(renderStreetPie(data));
+    charts.push(renderQuestionBars(data));
+    charts.push(renderReasonBars(data));
+    charts.push(renderResponseLine(data));
+    charts.push(renderAgeDoughnut(data));
+    charts.push(renderPoliceStack(data));
+  }
+
+  function renderStreetPie(data) {
+    const counts = { safe: 0, neutral: 0, unsafe: 0 };
+    data.forEach((row) => {
+      if (counts[row.streetSafety] !== undefined) counts[row.streetSafety] += 1;
+    });
+
+    return new Chart(document.getElementById("streetPie"), {
+      type: "pie",
+      data: {
+        labels: ["Safe", "Neutral", "Unsafe"],
+        datasets: [{
+          data: [counts.safe, counts.neutral, counts.unsafe],
+          backgroundColor: ["#22c55e", "#f59e0b", "#ef4444"]
+        }]
+      },
+      options: {
+        plugins: { legend: { position: "bottom" } }
+      }
+    });
+  }
+
+  function renderQuestionBars(data) {
+    const labels = Object.keys(QUESTION_LABELS);
+    const values = labels.map((key) => averageScore(data, key));
+
+    return new Chart(document.getElementById("questionBars"), {
+      type: "bar",
+      data: {
+        labels: labels.map((key) => QUESTION_LABELS[key]),
+        datasets: [{
+          data: values,
+          backgroundColor: "#155e75"
+        }]
+      },
+      options: {
+        scales: { y: { beginAtZero: true, max: 2 } },
+        plugins: { legend: { display: false } }
+      }
+    });
+  }
+
+  function renderReasonBars(data) {
+    const reasons = countReasons(data);
+    return new Chart(document.getElementById("reasonBars"), {
+      type: "bar",
+      data: {
+        labels: reasons.labels,
+        datasets: [{
+          data: reasons.values,
+          backgroundColor: "#f97316"
+        }]
+      },
+      options: {
+        indexAxis: "y",
+        scales: { x: { beginAtZero: true } },
+        plugins: { legend: { display: false } }
+      }
+    });
+  }
+
+  function renderResponseLine(data) {
+    const points = groupByDate(data);
+    return new Chart(document.getElementById("responseLine"), {
+      type: "line",
+      data: {
+        labels: points.labels,
+        datasets: [{
+          data: points.values,
+          borderColor: "#0ea5e9",
+          backgroundColor: "rgba(14, 165, 233, 0.2)",
+          tension: 0.35,
+          fill: true
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+  }
+
+  function renderAgeDoughnut(data) {
+    const buckets = { "below-25": 0, "25-45": 0, "above-45": 0 };
+    data.forEach((row) => {
+      if (row.ageGroup && buckets[row.ageGroup] !== undefined) buckets[row.ageGroup] += 1;
+    });
+
+    return new Chart(document.getElementById("ageDoughnut"), {
+      type: "doughnut",
+      data: {
+        labels: ["Below 25", "25-45", "Above 45"],
+        datasets: [{
+          data: [buckets["below-25"], buckets["25-45"], buckets["above-45"]],
+          backgroundColor: ["#0ea5e9", "#38bdf8", "#22c55e"]
+        }]
+      },
+      options: { plugins: { legend: { position: "bottom" } } }
+    });
+  }
+
+  function renderPoliceStack(data) {
+    const buckets = { immediate: 0, average: 0, "no-response": 0 };
+    data.forEach((row) => {
+      if (row.policeResponsiveness && buckets[row.policeResponsiveness] !== undefined) {
+        buckets[row.policeResponsiveness] += 1;
+      }
+    });
+
+    return new Chart(document.getElementById("policeStack"), {
+      type: "bar",
+      data: {
+        labels: ["Police Responsiveness"],
+        datasets: [
+          { label: "Immediate", data: [buckets.immediate], backgroundColor: "#22c55e" },
+          { label: "Average", data: [buckets.average], backgroundColor: "#f59e0b" },
+          { label: "No Response", data: [buckets["no-response"]], backgroundColor: "#ef4444" }
+        ]
+      },
+      options: {
+        scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true } }
+      }
+    });
+  }
+
+  function averageScore(data, key) {
+    const map = SCORE_MAP[key];
+    if (!map) return 0;
+    let total = 0;
+    let count = 0;
+    data.forEach((row) => {
+      if (row[key] && map[row[key]] !== undefined) {
+        total += map[row[key]];
+        count += 1;
+      }
+    });
+    return count ? total / count : 0;
+  }
+
+  function countReasons(data) {
+    const buckets = {};
+    data.forEach((row) => {
+      ["streetUnsafeReasons", "nightUnsafeReasons", "policeNoResponseReasons"].forEach((key) => {
+        const values = Array.isArray(row[key]) ? row[key] : row[key] ? [row[key]] : [];
+        values.forEach((value) => {
+          buckets[value] = (buckets[value] || 0) + 1;
+        });
+      });
+    });
+
+    const sorted = Object.entries(buckets).sort((a, b) => b[1] - a[1]).slice(0, 6);
+    if (!sorted.length) {
+      return { labels: ["No data"], values: [0] };
+    }
+
+    return {
+      labels: sorted.map((item) => formatLabel(item[0])),
+      values: sorted.map((item) => item[1])
+    };
+  }
+
+  function groupByDate(data) {
+    const buckets = {};
+    data.forEach((row) => {
+      if (!row.submittedAt) return;
+      const dateKey = new Date(row.submittedAt).toISOString().slice(0, 10);
+      buckets[dateKey] = (buckets[dateKey] || 0) + 1;
+    });
+
+    const labels = Object.keys(buckets).sort();
+    return { labels, values: labels.map((label) => buckets[label]) };
+  }
+
+  function formatLabel(value) {
+    if (!value) return "";
+    return value
+      .replace(/-/g, " ")
+      .replace(/\b\w/g, (m) => m.toUpperCase());
+  }
+</script>
+</body>
+</html>
